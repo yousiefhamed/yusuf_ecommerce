@@ -1,0 +1,104 @@
+.header.flex.screen-bg {
+  justify-content: space-between;
+  backdrop-filter: blur(50px);
+  padding: 20px 40px;
+  box-shadow: 0 4px 4px #0000004b;
+  position: fixed;
+  top: 0;
+  z-index: 50;
+  &::after {
+    background-color: transparent;
+  }
+  .menu {
+    display: none;
+  }
+  @media (max-width: 850px) {
+    overflow: visible;
+    padding: 20px;
+    .menu {
+      display: inline-block;
+      padding: 15px;
+    }
+    nav {
+      position: fixed;
+      top: 90px;
+      left: 0;
+      background: #fff;
+      width: 100%;
+      height: 100vh;
+      flex-direction: column;
+      gap: 50px;
+      transform: translate(100%, 0);
+      transition: transform 0.5s;
+    }
+    nav.open-mobile {
+      transform: translate(0, 0);
+    }
+  }
+  nav a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+}
+.navigation {
+  gap: 20px;
+}
+
+header.hero-section {
+  width: 100%;
+  display: grid;
+  justify-content: space-between;
+  justify-items: start;
+  align-items: center;
+  align-content: center;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  padding-block: 30px;
+  min-height: calc(100svh - 90px - 20px);
+  position: relative;
+  .background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-40%, -50%);
+    z-index: -50;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 1000 1000%22 xmlns=%22http:%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cdefs%3E%3CclipPath id=%22a%22%3E%3Cpath fill=%22currentColor%22 d=%22M815.5 602.5Q782 705 709.5 814T520 860.5Q403 798 276.5 776t-137-149q-10.5-127 22-238t127-180Q383 140 492 164.5t189.5 85Q762 310 805.5 405t10 197.5Z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg clip-path=%22url(%23a)%22%3E%3Cpath fill=%22rgba(244%2C 255%2C 84%2C 0.36)%22 d=%22M815.5 602.5Q782 705 709.5 814T520 860.5Q403 798 276.5 776t-137-149q-10.5-127 22-238t127-180Q383 140 492 164.5t189.5 85Q762 310 805.5 405t10 197.5Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+  .content {
+    grid-column: 1 / span 7;
+    align-items: flex-start;
+    gap: 25px;
+    padding-left: 40px;
+  }
+  .img {
+    padding-right: 40px;
+    width: fit-content;
+    grid-column: 8 / span 5;
+    justify-self: center;
+
+    img {
+      width: 100%;
+      max-height: 700px;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+  }
+  @media (max-width: 850px) {
+    justify-items: center;
+    justify-content: center;
+    grid-template-columns: calc(100% - 40px);
+    .background {
+      transform: translate(-40%, -80%);
+    }
+    .content,
+    .img {
+      grid-column: 1 / span 1;
+      padding: 0;
+    }
+  }
+}

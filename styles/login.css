@@ -1,0 +1,39 @@
+form.login {
+  background-color: rgb(251, 255, 194);
+  padding: 20px 0;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 100%;
+  gap: 30px;
+
+  label {
+    width: 90%;
+
+    p {
+      font-weight: 700;
+      font-size: 16px;
+      text-indent: 10px;
+      padding-bottom: 5px;
+    }
+    input {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      height: 50px;
+      padding-inline: 20px;
+      margin-bottom: 5px;
+      background-color: rgb(254, 255, 237);
+    }
+    .error-message {
+      display: none;
+      color: red;
+      padding-left: 20px;
+      padding-top: 2px;
+      font-weight: 600;
+      font-size: 12px;
+      &::before {
+        content: "* ";
+      }
+    }
+  }
+}
