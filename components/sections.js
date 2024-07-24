@@ -1,6 +1,6 @@
 const generateHeader = (loggedIn) => `
   <header class="header flex w-full screen-bg">
-    <h1><a href="/">YUSUF</a></h1>
+    <h1><a href="#" onclick="renderHome()">YUSUF</a></h1>
     <button onclick="openMenu()" class="button roundful flex menu">
       <span class="material-symbols-outlined">menu</span>
     </button>
@@ -39,15 +39,15 @@ const emptyCart = () => `
       <img class="empty-cart" src="./assets/empty-cart.png" alt="empty-cart" />
       <p class="large">Oh no! Your Cart is Empty.... :(</p>
       <br />
-      <button onclick="renderProducts()" class="button">
+      <button onclick="renderAllProducts()" class="button">
         <p class="medium">Explore Products</p>
       </button>
     </div>
 `;
 
-const succesfull = (title) => `
+const succesfull = (img, title) => `
       <div id="successPopup" class="successful-popup flex">
-        <img src="./assets/success.png" />
+        <img src="./assets/${img}" />
         <p>${title}</p>
       </div>
 `;

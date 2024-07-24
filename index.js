@@ -43,9 +43,15 @@ const validateLogin = () => {
 
     if (isUserRegistered) {
       if (isUserRegistered.password === password.value) {
-        alert("Login successful!");
-        updateLocalStorage("loggedIn", 1);
-        renderAllProducts();
+        container.innerHTML += succesfull(
+          "success.png",
+          `You've been Logged In Successfully.`
+        );
+        setTimeout(() => {
+          document.getElementById("successPopup").remove();
+          updateLocalStorage("loggedIn", 1);
+          renderAllProducts();
+        }, 2000);
       } else {
         password.parentElement.querySelector(".error-message").style.display =
           "inline";
@@ -132,16 +138,24 @@ const renderAllProducts = () => {
 
     renderProducts(allProducts);
   } else {
-    alert("Please login to view products");
-    renderLogin(loggedIn);
+    container.innerHTML += succesfull(
+      "error.png",
+      `Please Login to See All Products`
+    );
+    setTimeout(() => {
+      document.getElementById("successPopup").remove();
+      renderLogin(loggedIn);
+    }, 2000);
   }
 };
 
 const renderCart = () => {
-  console.log(cart);
   if (!loggedIn) {
-    alert("Please login to view Cart");
-    renderLogin();
+    container.innerHTML += succesfull("error.png", `Please login to view Cart`);
+    setTimeout(() => {
+      document.getElementById("successPopup").remove();
+      renderLogin(loggedIn);
+    }, 2000);
     return;
   }
   container.innerHTML = getProductsContainer(loggedIn, "cart");
@@ -151,7 +165,10 @@ const renderCart = () => {
 const addToCart = (id) => {
   const product = allProducts.find((product) => product.id === id);
   cart.push(product);
-  container.innerHTML += succesfull(`The product has been added to the cart`);
+  container.innerHTML += succesfull(
+    "success.png",
+    `The product has been added to the cart`
+  );
   setTimeout(() => document.getElementById("successPopup").remove(), 2000);
 };
 
