@@ -1,18 +1,16 @@
 import {
   getHome,
   getAbout,
-  getLogin,
   getProductsContainer,
   emptyCart,
   succesfull,
   getProductInstance,
   getCartInstance,
 } from "./components/sections.js";
+import { renderSignUp, renderLogin, renderLogout } from "./account/account.js";
 import products from "./data/products.js";
-import users from "./data/users.js";
 
 const allProducts = products();
-const allUsers = users();
 const cart = [];
 let loggedIn = Number(localStorage.getItem("loggedIn"));
 
@@ -29,61 +27,6 @@ const renderHome = () => {
 
 const renderAbout = () => {
   container.innerHTML = getAbout(loggedIn);
-};
-
-const validateLogin = () => {
-  document.querySelector("form.login").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
-
-    const isUserRegistered = allUsers.find(
-      (user) => user.username === username.value
-    );
-
-    if (isUserRegistered) {
-      if (isUserRegistered.password === password.value) {
-        container.innerHTML += succesfull(
-          "success.png",
-          `You've been Logged In Successfully.`
-        );
-        setTimeout(() => {
-          document.getElementById("successPopup").remove();
-          updateLocalStorage("loggedIn", 1);
-          renderAllProducts();
-        }, 2000);
-      } else {
-        password.parentElement.querySelector(".error-message").style.display =
-          "inline";
-        password.parentElement.querySelector(
-          ".error-message"
-        ).innerHTML = `The password is not correct`;
-      }
-    } else {
-      username.parentElement.querySelector(".error-message").style.display =
-        "inline";
-      username.parentElement.querySelector(
-        ".error-message"
-      ).innerHTML = `The email is not registered yet`;
-    }
-  });
-};
-
-const renderLogin = (loggedIn) => {
-  if (!loggedIn) {
-    container.innerHTML = getLogin(loggedIn);
-    validateLogin();
-  } else {
-    renderAllProducts();
-  }
-};
-
-const renderLogout = (loggedIn) => {
-  if (loggedIn) {
-    loggedIn = 0;
-    updateLocalStorage("loggedIn", 0);
-    renderHome();
-  }
 };
 
 const renderProducts = (products, type) => {
@@ -176,6 +119,14 @@ const openMenu = () => {
   document.querySelector("nav.navigation").classList.toggle("open-mobile");
 };
 
+const renderSuccessfulMessage = (img, title, timer, CB) => {
+  container.innerHTML += succesfull(img, title);
+  setTimeout(() => {
+    document.getElementById("successPopup").remove();
+    if (CB) CB();
+  }, timer);
+};
+
 if (loggedIn) {
   renderAllProducts();
 } else {
@@ -184,9 +135,14 @@ if (loggedIn) {
 
 window.renderHome = renderHome;
 window.renderAbout = renderAbout;
-window.renderLogin = renderLogin;
-window.renderLogout = renderLogout;
 window.renderAllProducts = renderAllProducts;
 window.renderCart = renderCart;
 window.addToCart = addToCart;
 window.openMenu = openMenu;
+
+// account
+window.renderLogin = renderLogin;
+window.renderLogout = renderLogout;
+window.renderSignUp = renderSignUp;
+
+export { renderSuccessfulMessage, updateLocalStorage };

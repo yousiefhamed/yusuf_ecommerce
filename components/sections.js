@@ -313,13 +313,13 @@ const getLogin = (loggedIn) => `
     <section class="section flex flex-col">
       <form class="flex flex-col login">
         <h2 class="heading">Login</h2>
-        <label for="username">
-          <p>Username:</p>
+        <label for="email">
+          <p>Email:</p>
           <input
             placeholder="example@gmail.com"
             type="text"
-            id="username"
-            required
+            id="email"
+            autocomplete=true
           />
           <span class="error-message"></span>
         </label>
@@ -329,11 +329,10 @@ const getLogin = (loggedIn) => `
             placeholder="Enter your password..."
             type="password"
             id="password"
-            required
           />
           <span class="error-message"></span>
         </label>
-        <button type="submit" class="button">Login</button>
+        <button type="submit" onclick="validateLogin(event)" class="button">Login</button>
         <div class="center flex flex-col gap-1">
           <p>
             Forget your password?
@@ -341,7 +340,52 @@ const getLogin = (loggedIn) => `
           </p>
           <p>
             Don't Have an Account?
-            <a href="#" class="link small">Sign Up</a>
+            <a href="#" onclick="renderSignUp()" class="link small">Sign Up</a>
+          </p>
+        </div>
+      </form>
+    </section>
+`;
+
+const getSignUp = (loggedIn) => `
+    ${generateHeader(loggedIn)}
+    <section class="section flex flex-col">
+      <form class="flex flex-col sign-up">
+        <h2 class="heading">Sign Up</h2>
+        <label for="name">
+          <p>Name:</p>
+          <input
+            placeholder="Enter your Name..."
+            type="text"
+            id="name"
+            autocomplete=true
+          />
+          <span class="error-message"></span>
+        </label>
+        <label for="email">
+          <p>Email:</p>
+          <input
+            placeholder="example@gmail.com"
+            type="email"
+            id="email"
+            autocomplete=true
+          />
+          <span class="error-message"></span>
+        </label>
+        <label for="password">
+          <p>Password:</p>
+          <input
+            placeholder="Enter your password..."
+            type="password"
+            id="password"
+          />
+          <span class="error-message"></span>
+        </label>
+        <button type="submit" onclick="validateSignUp(event)" class="button">Sign Up</button>
+        <div class="center flex flex-col gap-1">
+          <p>
+            Already Have an Account?
+            <a href="#" onclick="renderLogin()" class="link small">Login</a>
           </p>
         </div>
       </form>
@@ -414,6 +458,7 @@ export {
   getHome,
   getAbout,
   getLogin,
+  getSignUp,
   getProductsContainer,
   getProductInstance,
   getCartInstance,
