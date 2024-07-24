@@ -2,15 +2,17 @@ import { renderSuccessfulMessage, updateLocalStorage } from "./../index.js";
 import { getLogin, getSignUp, succesfull } from "./../components/sections.js";
 
 let loggedIn = Number(localStorage.getItem("loggedIn"));
+const BACKEND_API =
+  "https://yusufecommercebackend-production.up.railway.app/api";
 
 const getUsers = async () => {
-  const response = await fetch("http://localhost:3000/api/users");
+  const response = await fetch(`${BACKEND_API}/users`);
   const users = await response.json();
   return users;
 };
 
 const updateUsers = async (user) => {
-  const response = await fetch("http://localhost:3000/api/users", {
+  const response = await fetch(`${BACKEND_API}/users`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user),
