@@ -1,17 +1,7 @@
-import {
-  getHome,
-  getAbout,
-  getProductsContainer,
-  emptyCart,
-  succesfull,
-  getProductInstance,
-  getCartInstance,
-} from "./components/sections.js";
+import { getHome, getAbout, succesfull } from "./components/sections.js";
 import { renderSignUp, renderLogin, renderLogout } from "./account/account.js";
-import products from "./data/products.js";
+import { renderAllProducts } from "./products/products.js";
 
-const allProducts = products();
-const cart = [];
 let loggedIn = Number(localStorage.getItem("loggedIn"));
 
 const container = document.getElementById("container");
@@ -27,92 +17,6 @@ const renderHome = () => {
 
 const renderAbout = () => {
   container.innerHTML = getAbout(loggedIn);
-};
-
-const renderProducts = (products, type) => {
-  const productsDiv = document.getElementById("products");
-  productsDiv.innerHTML = "";
-
-  if (type !== "cart") {
-    products.forEach(({ id, thumbnail, title, category, price }) => {
-      productsDiv.innerHTML += getProductInstance(
-        id,
-        thumbnail,
-        title,
-        category,
-        price
-      );
-    });
-  } else {
-    const cartIDs = new Set(products);
-    cartIDs.size
-      ? cartIDs.forEach(({ id, thumbnail, title, category, price }) => {
-          const quantity = products.filter((product) => product.id === id);
-          productsDiv.innerHTML += getCartInstance(
-            id,
-            thumbnail,
-            title,
-            category,
-            price,
-            quantity.length
-          );
-        })
-      : (productsDiv.innerHTML += emptyCart(loggedIn));
-  }
-};
-
-const renderAllProducts = () => {
-  if (loggedIn) {
-    container.innerHTML = getProductsContainer(loggedIn);
-
-    const searchInput = document.getElementById("search");
-    const searchBtn = document.getElementById("searchBtn");
-
-    searchBtn.addEventListener("click", () => {
-      const searchValue = searchInput.value.toLowerCase();
-      const filteredProducts = allProducts.filter(
-        (product) =>
-          product.title.toLowerCase().includes(searchValue) ||
-          product.description.toLowerCase().includes(searchValue)
-      );
-
-      renderProducts(filteredProducts);
-    });
-
-    renderProducts(allProducts);
-  } else {
-    container.innerHTML += succesfull(
-      "error.png",
-      `Please Login to See All Products`
-    );
-    setTimeout(() => {
-      document.getElementById("successPopup").remove();
-      renderLogin(loggedIn);
-    }, 2000);
-  }
-};
-
-const renderCart = () => {
-  if (!loggedIn) {
-    container.innerHTML += succesfull("error.png", `Please login to view Cart`);
-    setTimeout(() => {
-      document.getElementById("successPopup").remove();
-      renderLogin(loggedIn);
-    }, 2000);
-    return;
-  }
-  container.innerHTML = getProductsContainer(loggedIn, "cart");
-  renderProducts(cart, "cart");
-};
-
-const addToCart = (id) => {
-  const product = allProducts.find((product) => product.id === id);
-  cart.push(product);
-  container.innerHTML += succesfull(
-    "success.png",
-    `The product has been added to the cart`
-  );
-  setTimeout(() => document.getElementById("successPopup").remove(), 2000);
 };
 
 const openMenu = () => {

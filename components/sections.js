@@ -408,16 +408,18 @@ const getProductsContainer = (loggedIn, type) => `
     ${generateHeader(loggedIn)}
     ${!type ? `${search}` : ""}
     <section class="section flex flex-col items-start">
-      <h2 class="heading">${!type ? "Products" : "Cart"}</h2>
+      <h2 class="heading">${
+        !type ? "Products" : type === "cart" ? "Cart" : ""
+      }</h2>
       <div class="flex" id="products"></div>
     </section>
 `;
 
-const getProductInstance = (id, img, title, category, price) => `
+const getProductCardInstance = (id, img, title, category, price) => `
       <div class="product flex flex-col">
-        <img src=${img} alt="product" />
+        <img onclick="renderProduct(${id})" src=${img} alt="product" />
         <div class="flex">
-          <div>
+          <div onclick="renderProduct(${id})">
             <h2>${title}</h2>
             <p class="gray small">${category}</p>
             <p class="price">$${price}</p>
@@ -427,6 +429,146 @@ const getProductInstance = (id, img, title, category, price) => `
           </button>
         </div>
       </div>
+`;
+
+const getProductDetailsInstance = (
+  id,
+  thumbnail,
+  imgs,
+  title,
+  brand,
+  category,
+  price,
+  discount,
+  rating,
+  reviews,
+  availabilityStatus,
+  stock,
+  description,
+  tags,
+  weight,
+  dimensions,
+  warrantyInformation,
+  shippingInformation,
+  returnPolicy,
+  minimumOrderQuantity
+) => `
+      <div class="product-details items-start grid">
+      <div class="img-slider flex justify-start" id="imgSlider">
+        <img src="${thumbnail}"/>
+        ${imgs.map((img) => `<img src="${img}"/>`)}
+      </div>
+      <div class="flex flex-col items-start gap-5">
+        <div class="flex flex-col items-start gap-1">
+          <h2>${title}</h2>
+          <p class="gray small">by ${brand}</p>
+          <p class="category gray small">${category}</p>
+          <p class="price flex justify-start gap-1">
+            $${price} <span>$${price * (1 / discount)}</span>
+          </p>
+          <div class="rating flex justify-start gap-1">
+            <p class="stars flex justify-start">
+              ${[1, 2, 3, 4, 5]
+                .map((rate) => {
+                  if (rating - rate > 0) {
+                    return `<i class="fa-solid fa-star"></i>`;
+                  } else if (rating - rate < 0 && rating - rate > -1) {
+                    return `<i class="fa-regular fa-star-half-stroke"></i>`;
+                  } else {
+                    return `<i class="fa-regular fa-star"></i>`;
+                  }
+                })
+                .join("")}
+            </p>
+            <p class="gray small">${rating}/5</p>
+            <p class="reviews gray small">(${reviews.length} reviews)</p>
+          </div>
+          <p class="gray small">${availabilityStatus}</p>
+        </div>
+        <button class="button flex add-to-cart" onclick="addToCart(${id})">
+          <span class="material-symbols-outlined">add_shopping_cart</span>
+        </button>
+      </div>
+      <div class="col-span-all flex flex-col gap-5 items-start">
+        <p class="description small">
+          ${description}
+        </p>
+        <div class="tags flex justify-start">
+          ${tags.map((tag) => `<p class="tag gray small">${tag}</p>`).join("")}
+        </div>
+        <div class="specifications flex flex-col items-start gap-1">
+          <h3>Specifications</h3>
+          <ul class="flex flex-col items-start gap-1">
+            <li>
+              weight:
+              <span>${weight}</span>
+            </li>
+            <li>
+              width:
+              <span>${dimensions.width}</span>
+            </li>
+            <li>
+              height:
+              <span>${dimensions.height}</span>
+            </li>
+            <li>
+              depth:
+              <span>${dimensions.depth}</span>
+            </li>
+            <li>
+              warrantyInformation:
+              <span>${warrantyInformation}</span>
+            </li>
+            <li>
+              shippingInformation:
+              <span>${shippingInformation}</span>
+            </li>
+            <li>
+              returnPolicy:
+              <span>${returnPolicy}</span>
+            </li>
+            <li>
+              minimumOrderQuantity:
+              <span>${minimumOrderQuantity}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-span-all flex flex-col gap-5 items-start">
+        <h3>Customer Reviews</h3>
+        ${reviews
+          .map((review) => {
+            return `
+            <div class="reviews rating flex flex-col items-start gap-1">
+              <div class="flex flex-col items-start gap-1">
+                <p class="gray small">${review.reviewerName}</p>
+                <p class="gray small">${review.reviewerEmail}</p>
+                <p class="stars flex justify-start">
+                ${[1, 2, 3, 4, 5]
+                  .map((rate) => {
+                    if (review.rating - rate > 0) {
+                      return `<i class="fa-solid fa-star"></i>`;
+                    } else if (
+                      review.rating - rate < 0 &&
+                      review.rating - rate > -1
+                    ) {
+                      return `<i class="fa-regular fa-star-half-stroke"></i>`;
+                    } else {
+                      return `<i class="fa-regular fa-star"></i>`;
+                    }
+                  })
+                  .join("")}
+                </p>              </div>
+                <p class="comment small">
+                "${review.comment}"
+                </p>
+                <p class="gray small">${review.date}</p>
+            </div>
+          `;
+          })
+          .join("")}
+      </div>
+    </div>
 `;
 
 const getCartInstance = (id, img, title, category, price, quantity) => `
@@ -460,7 +602,8 @@ export {
   getLogin,
   getSignUp,
   getProductsContainer,
-  getProductInstance,
+  getProductCardInstance,
+  getProductDetailsInstance,
   getCartInstance,
   emptyCart,
   succesfull,
